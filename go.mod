@@ -1,4 +1,4 @@
-module Server
+module ChatTest
 
 go 1.21.0
 
