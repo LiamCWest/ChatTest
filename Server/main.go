@@ -1,4 +1,4 @@
-package Server
+package main
 
 import (
 	"context"
@@ -34,6 +34,7 @@ func main() {
 	s := grpc.NewServer()
 	pb.RegisterGameServiceServer(s, &gameServer{})
 
+	log.Printf("Starting server on port 50051")
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("Failed to serve: %v", err)
 	}
