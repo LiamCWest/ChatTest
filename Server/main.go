@@ -10,7 +10,7 @@ import (
 )
 
 type gameServer struct {
-	pb.UnimplementedGameServiceServer
+	pb.GameServiceServer
 }
 
 func (s *gameServer) AddPlayer(ctx context.Context, req *pb.Player) (*pb.Player, error) {
