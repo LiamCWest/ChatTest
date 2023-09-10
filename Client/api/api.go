@@ -41,14 +41,14 @@ func (api API) AddPlayer(name string) (id string) {
 	return resp.Id.Id
 }
 
-func (api API) GetPlayer(id string) {
+func (api API) GetPlayer(id string) *pb.Player {
 	playerID := &pb.PlayerID{Id: id}
 	player, err := api.client.GetPlayer(context.Background(), playerID)
 	if err != nil {
 		log.Fatalf("GetPlayer failed: %v", err)
 	}
 
-	log.Printf("Player position: (%f, %f)", player.X, player.Y)
+	return player
 }
 
 func (api API) MovePlayer(id string, x float32, y float32) (xOut float32, yOut float32) {

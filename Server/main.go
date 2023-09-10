@@ -46,6 +46,9 @@ func (s *gameServer) MovePlayer(ctx context.Context, req *pb.PlayerMovement) (*p
 	player := s.players[req.Id.Id]
 	player.X += req.X
 	player.Y += req.Y
+
+	log.Printf("Player %s moved to X: %f, Y: %f", req.Id.Id, player.X, player.Y)
+
 	return player, nil
 }
 
