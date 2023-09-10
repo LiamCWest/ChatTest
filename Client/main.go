@@ -1,24 +1,19 @@
 package main
 
 import (
-	pb "github.com/LiamCWest/ChatTest/api/v1"
-
-	api "github.com/LiamCWest/ChatTest/Client/api"
+	serverApi "github.com/LiamCWest/ChatTest/Client/api"
 )
 
 func main() {
-	API := api.New()
-
-	// Create a client instance
-	client := pb.NewGameServiceClient(API.conn)
+	API := serverApi.New()
 
 	// Call the AddPlayer method
-	playerID := API.AddPlayer(client, "Liam")
+	playerID := API.AddPlayer("Liam")
 
 	// Get player position
-	API.GetPlayer(client, playerID)
+	API.GetPlayer(playerID)
 
 	// Move player
-	API.MovePlayer(client, "1", 1.0, 1.0)
-	API.MovePlayer(client, playerID, 1.0, 1.0)
+	API.MovePlayer("1", 1.0, 1.0)
+	API.MovePlayer(playerID, 1.0, 1.0)
 }
