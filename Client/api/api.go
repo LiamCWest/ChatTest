@@ -6,25 +6,18 @@ import (
 
 	pb "github.com/LiamCWest/ChatTest/api/v1"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
 )
 
 type API struct {
 	conn *grpc.ClientConn
 }
 
-func New() API {
-	api := API{}
-
-	// Create a connection to the gRPC server
-	err := error(nil)
-	api.conn, err = grpc.Dial("localhost:50051", grpc.WithTransportCredentials(insecure.NewCredentials()))
+func New() *API {
+	conn, err := grpc.Dial("localhost:50051", grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("Failed to connect: %v", err)
 	}
-	defer api.conn.Close()
-
-	return api
+	return &API{conn: conn}
 }
 
 func (api API) AddPlayer(client pb.GameServiceClient, name string) (id string) {
