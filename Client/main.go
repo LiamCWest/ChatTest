@@ -1,19 +1,26 @@
 package main
 
 import (
+	"log"
+
 	serverApi "github.com/LiamCWest/ChatTest/Client/api"
+	gui "github.com/LiamCWest/ChatTest/Client/gui"
+	utils "github.com/LiamCWest/ChatTest/api/v1/Utils"
 )
 
 func main() {
 	API := serverApi.New()
 
 	// Call the AddPlayer method
-	playerID := API.AddPlayer("Liam")
+	player := utils.NewPlayerFromMessage(API.AddPlayer("Liam"))
 
 	// Get player position
-	API.GetPlayer(playerID)
+	log.Printf("Player %s is at X: %f, Y: %f", player.GetID(), player.GetPos().X, player.GetPos().Y)
 
 	// Move player
-	API.MovePlayer("1", 1.0, 1.0)
-	API.MovePlayer(playerID, 1.0, 1.0)
+	API.MovePlayer(player.GetID(), utils.NewVector2(1.0, 1.0))
+	API.MovePlayer(player.GetID(), utils.NewVector2(1.0, 1.0))
+
+	gui := gui.New()
+	gui.Run()
 }

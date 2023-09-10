@@ -5,6 +5,7 @@ import (
 	"log"
 
 	pb "github.com/LiamCWest/ChatTest/api/v1"
+	utils "github.com/LiamCWest/ChatTest/api/v1/Utils"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
@@ -29,7 +30,7 @@ func (api API) GetClient() pb.GameServiceClient {
 	return api.client
 }
 
-func (api API) AddPlayer(name string) (id string) {
+func (api API) AddPlayer(name string) *pb.Player {
 	player := &pb.Player{Name: name}
 	resp, err := api.client.AddPlayer(context.Background(), player)
 	if err != nil {
@@ -38,7 +39,7 @@ func (api API) AddPlayer(name string) (id string) {
 
 	log.Printf("Added player with ID %s", resp.Id.Id)
 
-	return resp.Id.Id
+	return resp
 }
 
 func (api API) GetPlayer(id string) *pb.Player {
@@ -51,15 +52,13 @@ func (api API) GetPlayer(id string) *pb.Player {
 	return player
 }
 
-func (api API) MovePlayer(id string, x float32, y float32) (xOut float32, yOut float32) {
+func (api API) MovePlayer(id string, v utils.Vector2) utils.Vector2 {
 	playerID := &pb.PlayerID{Id: id}
-	playerMovement := &pb.PlayerMovement{Id: playerID, X: x, Y: y}
+	playerMovement := &pb.PlayerMovement{Id: playerID, X: v.X, Y: v.Y}
 	player, err := api.client.MovePlayer(context.Background(), playerMovement)
 	if err != nil {
 		log.Fatalf("MovePlayer failed: %v", err)
 	}
 
-	log.Printf("Player position: (%f, %f)", player.X, player.Y)
-
-	return player.X, player.Y
+	return utils.NewVector2(player.X, player.Y)
 }
