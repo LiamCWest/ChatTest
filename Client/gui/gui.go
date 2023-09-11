@@ -8,49 +8,32 @@ import (
 	"github.com/go-gl/glfw/v3.2/glfw"
 )
 
+type GUI struct {
+	Window *glfw.Window
+}
+
 const (
 	width  = 500
 	height = 500
 )
 
-type GUI struct {
-	window  *glfw.Window
-	program uint32
-}
-
-func New() GUI {
-	gui := GUI{}
-
-	log.Println("Created GUI")
-
-	return gui
-}
-
-func (gui GUI) Run() {
+func NewGUI() *GUI {
 	runtime.LockOSThread()
 
-	log.Printf("Running GUI")
-
-	gui.initGlfw()
+	window := initGlfw()
 	defer glfw.Terminate()
 
-	gui.initOpenGL()
+	program := initOpenGL()
 
-	for !gui.window.ShouldClose() {
-		gui.draw()
+	for !window.ShouldClose() {
+		draw(window, program)
 	}
-}
 
-func (gui GUI) draw() {
-	gl.Clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
-	gl.UseProgram(gui.program)
-
-	glfw.PollEvents()
-	gui.window.SwapBuffers()
+	return &GUI{Window: window}
 }
 
 // initGlfw initializes glfw and returns a Window to use.
-func (gui GUI) initGlfw() {
+func initGlfw() *glfw.Window {
 	if err := glfw.Init(); err != nil {
 		panic(err)
 	}
@@ -67,11 +50,11 @@ func (gui GUI) initGlfw() {
 	}
 	window.MakeContextCurrent()
 
-	gui.window = window
+	return window
 }
 
 // initOpenGL initializes OpenGL and returns an intiialized program.
-func (gui GUI) initOpenGL() {
+func initOpenGL() uint32 {
 	if err := gl.Init(); err != nil {
 		panic(err)
 	}
@@ -80,5 +63,13 @@ func (gui GUI) initOpenGL() {
 
 	prog := gl.CreateProgram()
 	gl.LinkProgram(prog)
-	gui.program = prog
+	return prog
+}
+
+func draw(window *glfw.Window, program uint32) {
+	gl.Clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
+	gl.UseProgram(program)
+
+	glfw.PollEvents()
+	window.SwapBuffers()
 }

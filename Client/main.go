@@ -4,7 +4,7 @@ import (
 	"log"
 
 	serverApi "github.com/LiamCWest/ChatTest/Client/api"
-	gui "github.com/LiamCWest/ChatTest/Client/gui"
+	graphics "github.com/LiamCWest/ChatTest/Client/gui"
 	utils "github.com/LiamCWest/ChatTest/api/v1/Utils"
 )
 
@@ -21,6 +21,5 @@ func main() {
 	API.MovePlayer(player.GetID(), utils.NewVector2(1.0, 1.0))
 	API.MovePlayer(player.GetID(), utils.NewVector2(1.0, 1.0))
 
-	gui := gui.New()
-	gui.Run()
+	graphics.NewGUI()
 }
