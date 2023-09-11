@@ -10,7 +10,6 @@ require (
 )
 
 require (
-	github.com/go-gl/glfw/v3.3/glfw v0.0.0-20221017161538-93cebf72946b // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
 	golang.org/x/net v0.15.0 // indirect
 	golang.org/x/sys v0.12.0 // indirect

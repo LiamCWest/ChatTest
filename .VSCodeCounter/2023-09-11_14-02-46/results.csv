@@ -1,0 +1,14 @@
+"filename", "language", "Go", "Go Module File", "Go Checksum File", "comment", "blank", "total"
+"/home/archiso/Documents/Code/ChatTest/Client/api/api.go", "Go", 50, 0, 0, 0, 15, 65
+"/home/archiso/Documents/Code/ChatTest/Client/gui/gui.go", "Go", 75, 0, 0, 3, 24, 102
+"/home/archiso/Documents/Code/ChatTest/Client/input/input.go", "Go", 1, 0, 0, 0, 1, 2
+"/home/archiso/Documents/Code/ChatTest/Client/main.go", "Go", 15, 0, 0, 3, 8, 26
+"/home/archiso/Documents/Code/ChatTest/Server/main.go", "Go", 54, 0, 0, 0, 13, 67
+"/home/archiso/Documents/Code/ChatTest/api/v1/Utils/GameObject.go", "Go", 62, 0, 0, 0, 16, 78
+"/home/archiso/Documents/Code/ChatTest/api/v1/Utils/Vector2.go", "Go", 47, 0, 0, 0, 16, 63
+"/home/archiso/Documents/Code/ChatTest/api/v1/Utils/player.go", "Go", 40, 0, 0, 0, 13, 53
+"/home/archiso/Documents/Code/ChatTest/api/v1/players.pb.go", "Go", 330, 0, 0, 10, 43, 383
+"/home/archiso/Documents/Code/ChatTest/api/v1/players_grpc.pb.go", "Go", 143, 0, 0, 21, 20, 184
+"/home/archiso/Documents/Code/ChatTest/go.mod", "Go Module File", 0, 15, 0, 0, 4, 19
+"/home/archiso/Documents/Code/ChatTest/go.sum", "Go Checksum File", 0, 0, 25, 0, 1, 26
+"Total", "-", 817, 15, 25, 37, 174, 1068
