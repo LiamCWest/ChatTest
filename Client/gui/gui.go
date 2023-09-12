@@ -69,6 +69,12 @@ func NewGUI() *GUI {
 			players = append(players, player)
 		}
 
+		glfw.PollEvents()
+
+		if window.GetKey(glfw.KeySpace) == glfw.Press {
+			log.Printf("Space pressed")
+		}
+
 		draw(points, window, program)
 	}
 
@@ -92,6 +98,7 @@ func initGlfw() *glfw.Window {
 		panic(err)
 	}
 	window.MakeContextCurrent()
+	window.SetKeyCallback(input.keyCallback)
 
 	return window
 }
