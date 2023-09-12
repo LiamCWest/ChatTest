@@ -50,7 +50,11 @@ func (v Vector2) Length() float32 {
 }
 
 func (v Vector2) Normalize() Vector2 {
-	return v.DivideScalar(v.Length())
+	len := v.Length()
+	if len == 0 {
+		return v
+	}
+	return v.DivideScalar(len)
 }
 
 func (v Vector2) Invert() Vector2 {

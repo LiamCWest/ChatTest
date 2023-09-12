@@ -35,7 +35,7 @@ const (
 		#version 410
 		out vec4 frag_colour;
 		void main() {
-			frag_colour = vec4(1, 1, 1, 1);
+			frag_colour = vec4(0, 0.5, 0.5, 1);
 		}
 	` + "\x00"
 )
@@ -50,15 +50,6 @@ func NewGUI(player *utils.Player) *GUI {
 	gui.Input.Window.SetKeyCallback(input.KeyCallback)
 
 	program := initOpenGL()
-
-	// testObject := utils.NewGameObject("test", utils.NewVector2(0, 0), [][4][3]float32{[4][3]float32{
-	// 	[3]float32{-0.5, 0.5, 0},
-	// 	[3]float32{-0.5, -0.5, 0},
-	// 	[3]float32{0.5, -0.5, 0},
-	// 	[3]float32{0.5, 0.5, 0},
-	// }})
-
-	// points := testObject.PointsFromQuads()
 
 	API := serverApi.New()
 
