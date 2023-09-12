@@ -21,7 +21,7 @@ func main() {
 	API.MovePlayer(player.GetID(), utils.NewVector2(50.0, 50.0))
 
 	// Start the graphics thread
-	go graphics.NewGUI()
+	go graphics.NewGUI(player)
 
 	// Wait for the input thread to finish
 	select {}

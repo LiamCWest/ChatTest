@@ -5,7 +5,6 @@ go 1.21.0
 require (
 	github.com/go-gl/gl v0.0.0-20211210172815-726fda9656d6
 	github.com/go-gl/glfw v0.0.0-20221017161538-93cebf72946b
-	github.com/hajimehoshi/ebiten v1.12.12
 	google.golang.org/grpc v1.58.0
 	google.golang.org/protobuf v1.31.0
 )

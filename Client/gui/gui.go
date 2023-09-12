@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	serverApi "github.com/LiamCWest/ChatTest/Client/api"
+	"github.com/LiamCWest/ChatTest/Client/input"
 	utils "github.com/LiamCWest/ChatTest/api/v1/Utils"
 	"github.com/go-gl/gl/v4.1-core/gl" // OR: github.com/go-gl/gl/v2.1/gl
 	"github.com/go-gl/glfw/v3.2/glfw"
@@ -14,11 +15,13 @@ import (
 
 type GUI struct {
 	Window *glfw.Window
+	Input  *input.Input
 }
 
 const (
 	width  = 500
 	height = 500
+	speed  = 100
 
 	vertexShaderSource = `
 		#version 410
@@ -37,11 +40,14 @@ const (
 	` + "\x00"
 )
 
-func NewGUI() *GUI {
+func NewGUI(player *utils.Player) *GUI {
 	runtime.LockOSThread()
 
 	window := initGlfw()
 	defer glfw.Terminate()
+
+	gui := &GUI{Window: window, Input: input.NewInput(window)}
+	gui.Input.Window.SetKeyCallback(input.KeyCallback)
 
 	program := initOpenGL()
 
@@ -56,7 +62,27 @@ func NewGUI() *GUI {
 
 	API := serverApi.New()
 
+	var (
+		dt          float64 = 1.0 / 60.0
+		accumulator float64 = 0
+		currentTime float64 = glfw.GetTime()
+	)
+
 	for !window.ShouldClose() {
+
+		newTime := glfw.GetTime()
+		frameTime := newTime - currentTime
+		currentTime = newTime
+
+		accumulator += frameTime
+
+		for accumulator >= dt {
+			// Update the game
+			API.MovePlayer(player.GetID(), player.GetVelocity().MultiplyScalar(float32(dt)*speed))
+
+			accumulator -= dt
+		}
+
 		playersMessage := API.GetPlayers()
 		players := make([]*utils.Player, 0, len(playersMessage))
 
@@ -71,14 +97,13 @@ func NewGUI() *GUI {
 
 		glfw.PollEvents()
 
-		if window.GetKey(glfw.KeySpace) == glfw.Press {
-			log.Printf("Space pressed")
-		}
+		input.MovementKeys(gui.Input.Window, player)
+		// player.SetVelocity(utils.NewVector2(1, 1))
 
 		draw(points, window, program)
 	}
 
-	return &GUI{Window: window}
+	return &GUI{Window: window, Input: gui.Input}
 }
 
 // initGlfw initializes glfw and returns a Window to use.
@@ -98,7 +123,6 @@ func initGlfw() *glfw.Window {
 		panic(err)
 	}
 	window.MakeContextCurrent()
-	window.SetKeyCallback(input.keyCallback)
 
 	return window
 }

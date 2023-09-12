@@ -10,14 +10,15 @@ type Player struct {
 	pos        Vector2
 	radius     float32
 	gameObject *GameObject
+	velocity   Vector2
 }
 
 func NewPlayer(id string, name string, pos Vector2, radius float32) *Player {
-	return &Player{id: id, name: name, pos: pos, radius: radius}
+	return &Player{id: id, name: name, pos: pos, radius: radius, velocity: NewVector2(0, 0)}
 }
 
 func NewPlayerFromMessage(p *pb.Player) *Player {
-	return &Player{id: p.Id.Id, name: p.Name, pos: NewVector2(p.X, p.Y), radius: p.Radius}
+	return &Player{id: p.Id.Id, name: p.Name, pos: NewVector2(p.X, p.Y), radius: p.Radius, velocity: NewVector2(0, 0)}
 }
 
 func (p *Player) GenGameObject() *GameObject {
@@ -64,4 +65,12 @@ func (p *Player) SetRadius(radius float32) {
 
 func (p *Player) Move(pos Vector2) {
 	p.pos = p.pos.Add(pos)
+}
+
+func (p *Player) SetVelocity(velocity Vector2) {
+	p.velocity = velocity
+}
+
+func (p *Player) GetVelocity() Vector2 {
+	return p.velocity
 }
