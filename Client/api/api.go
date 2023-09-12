@@ -2,6 +2,7 @@ package api
 
 import (
 	"context"
+	"io"
 	"log"
 
 	pb "github.com/LiamCWest/ChatTest/api/v1"
@@ -61,4 +62,30 @@ func (api API) MovePlayer(id string, v utils.Vector2) utils.Vector2 {
 	}
 
 	return utils.NewVector2(player.X, player.Y)
+}
+
+func (api API) GetPlayers() []*pb.Player {
+	ctx := context.Background()
+	stream, err := api.client.GetPlayers(ctx, &pb.Empty{})
+	if err != nil {
+		log.Fatalf("GetPlayers failed: %v", err)
+	}
+
+	players := make([]*pb.Player, 0)
+	for {
+		playersMessage, err := stream.Recv()
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			log.Fatalf("GetPlayers failed: %v", err)
+		}
+
+		// Append each Player message in the Players message to the slice of Player messages
+		for _, player := range playersMessage.Players {
+			players = append(players, player)
+		}
+	}
+
+	return players
 }

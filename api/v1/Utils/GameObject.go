@@ -25,16 +25,19 @@ func (quad Quad) PointsFromTris() []float32 {
 }
 
 type GameObject struct {
-	drawable uint32
-	ID       string
-	Pos      Vector2
-	Quads    []*Quad
+	drawable    uint32
+	ID          string
+	Pos         Vector2
+	StaticQuads []*Quad
+	Quads       []*Quad
 }
 
 func NewGameObject(ID string, pos Vector2, QuadPoints [][4][3]float32) *GameObject {
-	quads := QuadsFromPoints(QuadPoints)
-
-	return &GameObject{ID: ID, Pos: pos, Quads: quads}
+	staticQuads := QuadsFromPoints(QuadPoints)
+	quads := staticQuads
+	gameObject := &GameObject{ID: ID, Pos: pos, StaticQuads: staticQuads, Quads: quads}
+	gameObject.UpdatePos()
+	return gameObject
 }
 
 func (gameobject GameObject) TrisFromQuads() []triangle {
@@ -74,4 +77,15 @@ func QuadsFromPoints(QuadPoints [][4][3]float32) []*Quad {
 	}
 
 	return quads[1:]
+}
+
+func (gameObject GameObject) UpdatePos() {
+	for i := 0; i < len(gameObject.Quads); i++ {
+		for j := 0; j < len(gameObject.Quads[i].Tris); j++ {
+			for k := 0; k < len(gameObject.Quads[i].Tris[j].Vertices); k += 3 {
+				gameObject.Quads[i].Tris[j].Vertices[k] = gameObject.Pos.X + gameObject.StaticQuads[i].Tris[j].Vertices[k]
+				gameObject.Quads[i].Tris[j].Vertices[k+1] = gameObject.Pos.Y + gameObject.StaticQuads[i].Tris[j].Vertices[k+1]
+			}
+		}
+	}
 }

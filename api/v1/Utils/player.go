@@ -5,10 +5,11 @@ import (
 )
 
 type Player struct {
-	id     string
-	name   string
-	pos    Vector2
-	radius float32
+	id         string
+	name       string
+	pos        Vector2
+	radius     float32
+	gameObject *GameObject
 }
 
 func NewPlayer(id string, name string, pos Vector2, radius float32) *Player {
@@ -17,6 +18,20 @@ func NewPlayer(id string, name string, pos Vector2, radius float32) *Player {
 
 func NewPlayerFromMessage(p *pb.Player) *Player {
 	return &Player{id: p.Id.Id, name: p.Name, pos: NewVector2(p.X, p.Y), radius: p.Radius}
+}
+
+func (p *Player) GenGameObject() *GameObject {
+	p.gameObject = NewGameObject(p.name, p.pos, [][4][3]float32{[4][3]float32{
+		[3]float32{0, 50, 0},
+		[3]float32{0, 0, 0},
+		[3]float32{50, 0, 0},
+		[3]float32{50, 50, 0},
+	}})
+	return p.gameObject
+}
+
+func (p *Player) GetGameObject() *GameObject {
+	return p.gameObject
 }
 
 func (p *Player) ToMessage() *pb.Player {

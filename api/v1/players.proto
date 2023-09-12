@@ -10,6 +10,7 @@ service GameService {
   rpc AddPlayer(Player) returns (Player) {}
   rpc GetPlayer(PlayerID) returns (Player) {}
   rpc MovePlayer(PlayerMovement) returns (Player) {}
+  rpc GetPlayers(Empty) returns (stream Players) {}
 }
 
 message PlayerID {
@@ -26,9 +27,15 @@ message Player {
   google.protobuf.Timestamp updated_at = 7;
 }
 
+message Players {
+  repeated Player players = 1;
+}
+
 message PlayerMovement {
   PlayerID id = 1;
   float x = 2;
   float y = 3;
   google.protobuf.Timestamp timestamp = 4;
 }
+
+message Empty {}

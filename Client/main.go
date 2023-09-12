@@ -18,8 +18,7 @@ func main() {
 	log.Printf("Player %s is at X: %f, Y: %f", player.GetID(), player.GetPos().X, player.GetPos().Y)
 
 	// Move player
-	API.MovePlayer(player.GetID(), utils.NewVector2(1.0, 1.0))
-	API.MovePlayer(player.GetID(), utils.NewVector2(1.0, 1.0))
+	API.MovePlayer(player.GetID(), utils.NewVector2(50.0, 50.0))
 
 	graphics.NewGUI()
 }

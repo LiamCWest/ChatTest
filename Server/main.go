@@ -50,6 +50,23 @@ func (s *gameServer) MovePlayer(ctx context.Context, req *pb.PlayerMovement) (*p
 	return player.ToMessage(), nil
 }
 
+func (s *gameServer) GetPlayers(req *pb.Empty, stream pb.GameService_GetPlayersServer) error {
+	players := make([]*pb.Player, 0, len(s.players))
+	for _, player := range s.players {
+		players = append(players, player.ToMessage())
+	}
+
+	// Create a Players message that contains the list of players
+	playersMessage := &pb.Players{Players: players}
+
+	// Send the Players message to the client
+	if err := stream.Send(playersMessage); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func main() {
 	lis, err := net.Listen("tcp", ":50051")
 	if err != nil {

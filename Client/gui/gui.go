@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"strings"
 
+	serverApi "github.com/LiamCWest/ChatTest/Client/api"
 	utils "github.com/LiamCWest/ChatTest/api/v1/Utils"
 	"github.com/go-gl/gl/v4.1-core/gl" // OR: github.com/go-gl/gl/v2.1/gl
 	"github.com/go-gl/glfw/v3.2/glfw"
@@ -44,16 +45,30 @@ func NewGUI() *GUI {
 
 	program := initOpenGL()
 
-	testObject := utils.NewGameObject("test", utils.NewVector2(0, 0), [][4][3]float32{[4][3]float32{
-		[3]float32{-0.5, 0.5, 0},
-		[3]float32{-0.5, -0.5, 0},
-		[3]float32{0.5, -0.5, 0},
-		[3]float32{0.5, 0.5, 0},
-	}})
+	// testObject := utils.NewGameObject("test", utils.NewVector2(0, 0), [][4][3]float32{[4][3]float32{
+	// 	[3]float32{-0.5, 0.5, 0},
+	// 	[3]float32{-0.5, -0.5, 0},
+	// 	[3]float32{0.5, -0.5, 0},
+	// 	[3]float32{0.5, 0.5, 0},
+	// }})
 
-	points := testObject.PointsFromQuads()
+	// points := testObject.PointsFromQuads()
+
+	API := serverApi.New()
 
 	for !window.ShouldClose() {
+		playersMessage := API.GetPlayers()
+		players := make([]*utils.Player, 0, len(playersMessage))
+
+		points := make([]float32, 0, len(playersMessage)*12)
+
+		for _, playerMessage := range playersMessage {
+			player := utils.NewPlayerFromMessage(playerMessage)
+			player.GenGameObject()
+			points = append(points, player.GetGameObject().PointsFromQuads()...)
+			players = append(players, player)
+		}
+
 		draw(points, window, program)
 	}
 
@@ -106,6 +121,12 @@ func initOpenGL() uint32 {
 }
 
 func draw(points []float32, window *glfw.Window, program uint32) {
+	for i := 0; i < len(points); i += 3 {
+		vectorPoint := utils.NewVector2(points[i], points[i+1])
+		vectorPoint = vectorPoint.Divide(utils.NewVector2(width, height)).MultiplyScalar(2).Subtract(utils.NewVector2(1, 1))
+		points[i] = vectorPoint.X
+		points[i+1] = vectorPoint.Y
+	}
 	vao := makeVao(points)
 	gl.Clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
 	gl.UseProgram(program)
