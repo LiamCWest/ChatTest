@@ -67,6 +67,12 @@ func (s *gameServer) GetPlayers(req *pb.Empty, stream pb.GameService_GetPlayersS
 	return nil
 }
 
+func (s *gameServer) RemovePlayer(ctx context.Context, req *pb.PlayerID) (*pb.Empty, error) {
+	delete(s.players, req.Id)
+	log.Printf("Removed player with ID %s", req.Id)
+	return &pb.Empty{}, nil
+}
+
 func main() {
 	lis, err := net.Listen("tcp", ":50051")
 	if err != nil {

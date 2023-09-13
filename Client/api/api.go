@@ -18,7 +18,7 @@ type API struct {
 func New() API {
 	api := API{}
 
-	conn, err := grpc.Dial("localhost:50051", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.Dial("127.0.0.1:50051", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		log.Fatalf("Failed to connect: %v", err)
 	}
@@ -88,4 +88,12 @@ func (api API) GetPlayers() []*pb.Player {
 	}
 
 	return players
+}
+
+func (api API) RemovePlayer(id string) {
+	playerID := &pb.PlayerID{Id: id}
+	_, err := api.client.RemovePlayer(context.Background(), playerID)
+	if err != nil {
+		log.Fatalf("RemovePlayer failed: %v", err)
+	}
 }

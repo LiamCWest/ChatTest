@@ -19,9 +19,9 @@ type GUI struct {
 }
 
 const (
-	width  = 500
-	height = 500
-	speed  = 100
+	width  = 1000
+	height = 600
+	speed  = 250
 
 	vertexShaderSource = `
 		#version 410
@@ -68,7 +68,7 @@ func NewGUI(player *utils.Player) *GUI {
 		accumulator += frameTime
 
 		for accumulator >= dt {
-			// Update the game
+			// move player
 			API.MovePlayer(player.GetID(), player.GetVelocity().MultiplyScalar(float32(dt)*speed))
 
 			accumulator -= dt
@@ -92,6 +92,8 @@ func NewGUI(player *utils.Player) *GUI {
 
 		draw(points, window, program)
 	}
+
+	API.RemovePlayer(player.GetID())
 
 	return &GUI{Window: window, Input: gui.Input}
 }
