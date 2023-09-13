@@ -19,7 +19,7 @@ func KeyCallback(window *glfw.Window, key glfw.Key, scancode int, action glfw.Ac
 	}
 }
 
-func MovementKeys(Window *glfw.Window, player *utils.Player) {
+func CheckKeys(Window *glfw.Window, player *utils.Player) {
 	if Window.GetKey(glfw.KeyW) == glfw.Press {
 		player.SetVelocity(utils.NewVector2(player.GetVelocity().X, 1).Normalize())
 	}

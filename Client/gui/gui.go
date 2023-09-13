@@ -88,8 +88,7 @@ func NewGUI(player *utils.Player) *GUI {
 
 		glfw.PollEvents()
 
-		input.MovementKeys(gui.Input.Window, player)
-		// player.SetVelocity(utils.NewVector2(1, 1))
+		input.CheckKeys(gui.Input.Window, player)
 
 		draw(points, window, program)
 	}
